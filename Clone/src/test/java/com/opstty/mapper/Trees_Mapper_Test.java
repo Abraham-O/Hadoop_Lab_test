@@ -1,5 +1,6 @@
 package com.opstty.mapper;
 
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -15,21 +16,23 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TokenizerMapperTest {
+public class Trees_Mapper_Test {
     @Mock
     private Mapper.Context context;
-    private TokenizerMapper tokenizerMapper;
+    private Trees_Mapper trees_mapper;
 
     @Before
     public void setup() {
-        this.tokenizerMapper = new TokenizerMapper();
+        this.trees_mapper = new Trees_Mapper();
     }
 
     @Test
     public void testMap() throws IOException, InterruptedException {
-        String value = "hyh foo bar tux";
-        this.tokenizerMapper.map(null, new Text(value), this.context);
-        verify(this.context, times(4))
-                .write(new Text("tux"), new IntWritable(1));
+        String value = "(48.857140829, 2.29533455314);7;Maclura;pomifera;Moraceae;1935;13.0;;Quai Branly, avenue de La Motte-Piquet, avenue de la Bourdonnais, avenue de Suffren;Oranger des Osages;;6;Parc du Champs de Mars";
+        this.trees_mapper.map(null, new Text(value), this.context);
+        verify(this.context, times(1))
+                .write(new Text("7"), NullWritable.get());
     }
 }
+
+
